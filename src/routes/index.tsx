@@ -4,12 +4,12 @@ import { Text } from '@/components/retroui/Text'
 import { Button } from '@/components/retroui/Button'
 import { createServerFn } from '@tanstack/react-start'
 import { db } from '@/db'
-import { blogsTable } from '@/db/schema'
+import { blogs } from '@/db/schema'
 
 // Static blog data
 const getBlogPosts = createServerFn().handler(async () => {
-  const blogs = await db.select().from(blogsTable);
-  return blogs;
+  const data = await db.select().from(blogs);
+  return data;
 })
 
 export const Route = createFileRoute('/')({
@@ -41,7 +41,7 @@ function BlogListPage() {
           <Card key={post.id} className="h-full flex flex-col hover:translate-none transition-transform shadow-none rounded-md">
             <Card.Header>
               <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground mb-3">
-                <span>{post.date}</span>
+                <span>{post.createdAt.toLocaleDateString()}</span>
                 {/* <span>|</span>
                 <span>by {post.author}</span> */}
               </div>
@@ -49,7 +49,7 @@ function BlogListPage() {
                 {post.title}
               </Card.Title>
               <Card.Description className="line-clamp-3 flex-grow">
-                {post.description}
+                {post.content}
               </Card.Description>
             </Card.Header>
 
